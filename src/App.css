@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+i.icon.open-new-window {
+  margin-left: 0.5em;
+}
+
+i.icon.open-new-window:after {
+  content: "\f35d";
+}

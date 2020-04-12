@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Container, Header, Icon, Image, Menu, Segment} from "semantic-ui-react";
-import ninjaImage from './ninja-dab.png';
+import labsImage from './labs.png';
 import {navigate, Router} from "@reach/router";
-import {Leaderboard} from "./Leaderboard";
+import {Feedback} from "./Feedback";
+import {Page} from "./Page";
 
 const moment = require("moment")
 
@@ -47,12 +48,13 @@ class App extends Component {
   render() {
     const currentMonth = moment().startOf("month")
 
-    const HomeRoute = () => <Leaderboard month={currentMonth.format('YYYY-MM-DD')}/>;
-    const LeaderboardRoute = props => <Leaderboard month={props.month} />;
+    const HomeRoute = () => <Feedback month={currentMonth.format('YYYY-MM-DD')}/>;
+    const FeedbackRoute = props => <Feedback month={props.month} />;
+    const PageRoute = props => <Page page={props.page} />;
 
     const page = {
-      header: "Ninjas Leaderboard",
-      view: <Leaderboard/>
+      header: "Neo4j Labs Feedback",
+      view: <Feedback/>
     }
 
     return (
@@ -65,13 +67,14 @@ class App extends Component {
             {page.header ? <Header as='h1' inverted color='grey' style={{marginTop: '0'}}>
               {page.header}
             </Header> : null}
-          <Image src={ninjaImage} width="38px" height="38px" />
+          <Image src={labsImage} width="38px" height="38px" />
 
           </Segment>
           <div style={{display: "flex", padding: "1em 1em"}}>
             <Router>
               <HomeRoute path="/" />
-              <LeaderboardRoute path="/leaderboard/:month" />
+              <FeedbackRoute path="/feedback/:month" />
+              <PageRoute path="/page/:page" />
             </Router>
           </div>
         </div>
