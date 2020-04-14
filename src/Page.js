@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Icon, Loader, Table} from "semantic-ui-react";
-import {Link} from "@reach/router";
 
 export class Page extends Component {
   constructor(props) {

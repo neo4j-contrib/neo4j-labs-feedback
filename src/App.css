@@ -44,3 +44,8 @@ i.icon.open-new-window {
 i.icon.open-new-window:after {
   content: "\f35d";
 }
+
+
+i.icon.on-fire:after {
+  content: "🔥"
+}

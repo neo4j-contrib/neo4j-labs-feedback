@@ -5,6 +5,7 @@ import labsImage from './labs.png';
 import {navigate, Router} from "@reach/router";
 import {Feedback} from "./Feedback";
 import {Page} from "./Page";
+import {Fire} from "./Fire";
 
 const moment = require("moment")
 
@@ -18,7 +19,7 @@ const defaultIconStyle = {
 
 const menuStyle = {
   borderRadius: '0',
-  minHeight: '100vh',
+  height: '100vh',
   display: 'flex',
   justifyContent: 'space-between',
   width: '6em'
@@ -35,10 +36,10 @@ function SideMenu() {
                  style={defaultIconStyle}>
         <Icon size='big' name='home' color='grey'/>
       </Menu.Item>
-      {/*<Menu.Item title='Centralities' as='a'*/}
-                 {/*style={menuItemStyle}>*/}
-        {/*<Icon size='big' name='angle double right' color='grey'/>*/}
-      {/*</Menu.Item>*/}
+      <Menu.Item  as='a' onClick={() => navigate("/fire")}
+                 style={defaultIconStyle}>
+        <Icon size='big' className='on-fire' color='grey'/>
+      </Menu.Item>
 
     </div>
   </Menu>
@@ -51,6 +52,7 @@ class App extends Component {
     const HomeRoute = () => <Feedback month={currentMonth.format('YYYY-MM-DD')}/>;
     const FeedbackRoute = props => <Feedback month={props.month} />;
     const PageRoute = props => <Page page={props.page} />;
+    const FireRoute = () => <Fire />;
 
     const page = {
       header: "Neo4j Labs Feedback",
@@ -75,6 +77,7 @@ class App extends Component {
               <HomeRoute path="/" />
               <FeedbackRoute path="/feedback/:month" />
               <PageRoute path="/page/:page" />
+              <FireRoute path="/fire" />
             </Router>
           </div>
         </div>
