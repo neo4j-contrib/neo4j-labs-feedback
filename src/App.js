@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import {Container, Header, Icon, Image, Menu, Segment} from "semantic-ui-react";
 import labsImage from './labs.png';
-import {navigate, Redirect, Router} from "@reach/router";
+import {Location, navigate, Redirect, Router} from "@reach/router";
 import {Feedback} from "./Feedback";
 import {Page} from "./Page";
 import {Fire} from "./Fire";
@@ -29,14 +29,15 @@ const topBarStyle = {
   height: '100%'
 }
 
-function SideMenu() {
+function SideMenu(props) {
+  const project = props.project
   return <Menu vertical={true} inverted style={menuStyle}>
     <div style={topBarStyle}>
-      <Menu.Item as='a' onClick={() => navigate("/")}
+      <Menu.Item as='a' onClick={() => navigate(`/${project}`)}
                  style={defaultIconStyle}>
         <Icon size='big' name='home' color='grey'/>
       </Menu.Item>
-      <Menu.Item  as='a' onClick={() => navigate("/apoc/fire")}
+      <Menu.Item  as='a' onClick={() => navigate(`/${project}/fire`)}
                  style={defaultIconStyle}>
         <Icon size='big' className='on-fire' color='grey'/>
       </Menu.Item>
@@ -46,13 +47,35 @@ function SideMenu() {
 }
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      project: "apoc"
+    }
+  }
+
+  updateProject(project) {
+    this.setState({project: project})
+  }
+
   render() {
     const currentMonth = moment().startOf("month")
 
-    const HomeRoute = () => <Feedback month={currentMonth.format('YYYY-MM-DD')}/>;
-    const FeedbackRoute = props => <Feedback month={props.month} />;
-    const PageRoute = props => <Page page={props.page} />;
-    const FireRoute = () => <Fire />;
+    const HomeRoute = (props) => {
+      return <Feedback month={currentMonth.format('YYYY-MM-DD')} project={props.project} updateProject = {this.updateProject.bind(this)}  />
+    };
+    const FeedbackRoute = props => {
+      return <Feedback month={props.month} project={props.project} updateProject = {this.updateProject} />
+    };
+    const PageRoute = props => {
+      return <Page page={props.page} project={props.project} updateProject = {this.updateProject} />
+    };
+    const FireRoute = (props) => {
+      return <Fire project={props.project} updateProject = {this.updateProject} />
+    };
+
+    const project = this.state.project;
 
     const page = {
       header: "Neo4j Labs Feedback",
@@ -61,7 +84,7 @@ class App extends Component {
 
     return (
       <Container fluid style={{ display: 'flex' }}>
-        <SideMenu />
+        <SideMenu project={project} />
 
         <div style={{width: '100%'}}>
           <Segment basic  vertical={false}
@@ -75,10 +98,10 @@ class App extends Component {
           <div style={{display: "flex", padding: "1em 1em"}}>
             <Router>
               <Redirect from="/" to="/apoc" />
-              <HomeRoute path="/apoc" />
-              <FeedbackRoute path="/apoc/feedback/:month" />
-              <PageRoute path="/apoc/page/:page" />
-              <FireRoute path="/apoc/fire" />
+              <HomeRoute path="/:project" />
+              <FeedbackRoute path="/:project/feedback/:month" />
+              <PageRoute path="/:project/page/:page" />
+              <FireRoute path="/:project/fire" />
             </Router>
           </div>
         </div>

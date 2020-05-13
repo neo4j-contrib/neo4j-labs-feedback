@@ -29,6 +29,10 @@ export class Page extends Component {
     if (prevProps.page !== this.props.page) {
       this.getActivities(this.props.page);
     }
+
+    if (prevProps.project !== this.props.project) {
+      this.props.updateProject(this.props.project)
+    }
   }
 
   render() {

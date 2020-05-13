@@ -31,6 +31,10 @@ export class Feedback extends Component {
     if (prevProps.month !== this.props.month) {
       this.getActivities(this.props.month);
     }
+
+    if (prevProps.project !== this.props.project) {
+      this.props.updateProject(this.props.project)
+    }
   }
 
   render() {
@@ -60,7 +64,7 @@ export class Feedback extends Component {
           inline
           defaultValue={this.props.month}
           options={monthOptions}
-          onChange={(event, data) => navigate("/apoc/feedback/" + data.value)}
+          onChange={(event, data) => navigate(`/${this.props.project}/feedback/${data.value}`)}
         /> <Icon name="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
         name="thumbs down outline icon red" style={{margin: 0}}/><sup>{totalNegative}</sup>
       </span>
@@ -79,7 +83,7 @@ export class Feedback extends Component {
           {data.map(row => {
             return <Table.Row>
               <Table.Cell key={row.uri}>
-                <Link to={"/page/" + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
+                <Link to={`/${this.props.project}/page/` + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
                 <a href={row.uri.toString()} target="_blank">
                   <Icon className="open-new-window black"/>
                 </a>

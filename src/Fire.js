@@ -28,6 +28,10 @@ export class Fire extends Component {
     if (prevProps.page !== this.props.page) {
       this.getActivities(this.props.page);
     }
+
+    if (prevProps.project !== this.props.project) {
+      this.props.updateProject(this.props.project)
+    }
   }
 
   render() {
@@ -48,7 +52,7 @@ export class Fire extends Component {
           {data.map(row => {
             return <Table.Row>
               <Table.Cell>
-                <Link to={"/page/" + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
+                <Link to={`/${this.props.project}/page/` + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
                 <a href={row.uri.toString()} target="_blank">
                   <Icon className="open-new-window black"/>
                 </a>
