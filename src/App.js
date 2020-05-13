@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import './App.css';
 import {Container, Dropdown, Header, Icon, Image, Menu, Segment} from "semantic-ui-react";
 import labsImage from './labs.png';
-import {Location, navigate, Redirect, Router} from "@reach/router";
+import {createHistory, Location, navigate, Redirect, Router} from "@reach/router";
 import {Feedback} from "./Feedback";
 import {Page} from "./Page";
 import {Fire} from "./Fire";
+import {AppContext, AppContextConsumer} from "./appContext";
 
 const moment = require("moment")
+
+
 
 const menuItemStyle = {
   padding: '2em'
@@ -29,63 +32,48 @@ const topBarStyle = {
   height: '100%'
 }
 
-function SideMenu(props) {
-  const project = props.project
+function SideMenu() {
 
   const options = [
     { key: "apoc", text: 'APOC', value: "apoc" },
     { key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams" },
   ]
 
-  return <Menu vertical={true} inverted style={menuStyle}>
-    <div style={topBarStyle}>
-      <Menu.Item>
-        <Dropdown options={options} fluid defaultValue={project} onChange={(event, data) => navigate(`/${data.value}`)} />
-      </Menu.Item>
+  return <AppContextConsumer>
+    {context => (<Menu vertical={true} inverted style={menuStyle}>
+        <div style={topBarStyle}>
+          <Menu.Item>
+            <Dropdown options={options} fluid defaultValue={context.project}
+                      onChange={(event, data) => {
+                        context.updateProject(data.value)
+                        navigate(`/${data.value}`)}
+                      }/>
+          </Menu.Item>
 
-      <Menu.Item as='a' onClick={() => navigate(`/${project}`)}
-                 style={defaultIconStyle}>
-        <Icon size='big' name='home' color='grey'/>
-      </Menu.Item>
-      <Menu.Item  as='a' onClick={() => navigate(`/${project}/fire`)}
-                 style={defaultIconStyle}>
-        <Icon size='big' className='on-fire' color='grey'/>
-      </Menu.Item>
+          <Menu.Item as='a' onClick={() => navigate(`/${context.project}`)}
+                     style={defaultIconStyle}>
+            <Icon size='big' name='home' color='grey'/>
+          </Menu.Item>
+          <Menu.Item as='a' onClick={() => navigate(`/${context.project}/fire`)}
+                     style={defaultIconStyle}>
+            <Icon size='big' className='on-fire' color='grey'/>
+          </Menu.Item>
 
-    </div>
-  </Menu>
+        </div>
+      </Menu>
+    )}
+  </AppContextConsumer>
 }
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      project: "apoc"
-    }
-  }
 
-  updateProject(project) {
-    this.setState({project: project})
-  }
 
   render() {
     const currentMonth = moment().startOf("month")
 
-    const HomeRoute = (props) => {
-      return <Feedback month={currentMonth.format('YYYY-MM-DD')} project={props.project} updateProject = {this.updateProject.bind(this)}  />
-    };
-    const FeedbackRoute = props => {
-      return <Feedback month={props.month} project={props.project} updateProject = {this.updateProject} />
-    };
-    const PageRoute = props => {
-      return <Page page={props.page} project={props.project} updateProject = {this.updateProject} />
-    };
-    const FireRoute = (props) => {
-      return <Fire project={props.project} updateProject = {this.updateProject} />
-    };
+    const FeedbackRoute = props => <Feedback month={props.month} project={props.project}  />;
 
-    const project = this.state.project;
 
     const page = {
       header: "Neo4j Labs Feedback",
@@ -94,7 +82,7 @@ class App extends Component {
 
     return (
       <Container fluid style={{ display: 'flex' }}>
-        <SideMenu project={project} />
+        <SideMenu />
 
         <div style={{width: '100%'}}>
           <Segment basic  vertical={false}
@@ -107,11 +95,11 @@ class App extends Component {
           </Segment>
           <div style={{display: "flex", padding: "1em 1em"}}>
             <Router>
-              <Redirect from="/" to="/apoc" />
-              <HomeRoute path="/:project" />
+              <Redirect from="/" to="/apoc" noThrow />
+              <Feedback path="/:project" month={currentMonth.format('YYYY-MM-DD')} />
               <FeedbackRoute path="/:project/feedback/:month" />
-              <PageRoute path="/:project/page/:page" />
-              <FireRoute path="/:project/fire" />
+              <Page path="/:project/page/:page" />
+              <Fire path="/:project/fire" />
             </Router>
           </div>
         </div>
@@ -119,5 +107,8 @@ class App extends Component {
     );
   }
 }
+
+
+App.contextType = AppContext;
 
 export default App;

@@ -5,6 +5,8 @@ import {Link, navigate} from "@reach/router";
 
 import Moment from 'moment'
 
+import { AppContext } from "./appContext";
+
 export class Feedback extends Component {
   constructor(props) {
     super(props)
@@ -19,7 +21,7 @@ export class Feedback extends Component {
 
   getActivities(month) {
     this.setState({data: []})
-    fetch('https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Feedback?date=' + month)
+    fetch(`https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Feedback/${this.props.project}?date=${month}`)
       .then(res => res.json())
       .then((data) => {
         this.setState({data: data})
@@ -28,12 +30,9 @@ export class Feedback extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.month !== this.props.month) {
+    console.log("componentDidUpdate...")
+    if (prevProps.month !== this.props.month || prevProps.project !== this.props.project) {
       this.getActivities(this.props.month);
-    }
-
-    if (prevProps.project !== this.props.project) {
-      this.props.updateProject(this.props.project)
     }
   }
 
