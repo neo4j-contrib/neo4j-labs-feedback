@@ -11,7 +11,8 @@ export class Feedback extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      apiRequestProcessed: false
     }
   }
 
@@ -20,11 +21,11 @@ export class Feedback extends Component {
   }
 
   getActivities(month) {
-    this.setState({data: []})
+    this.setState({data: [], apiRequestProcessed: false})
     fetch(`https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Feedback/${this.props.project}?date=${month}`)
       .then(res => res.json())
       .then((data) => {
-        this.setState({data: data})
+        this.setState({data: data, apiRequestProcessed: true})
       })
       .catch(console.log)
   }
@@ -37,7 +38,7 @@ export class Feedback extends Component {
   }
 
   render() {
-    const {data} = this.state
+    const {data, apiRequestProcessed} = this.state
 
     const dateStart = Moment(new Date(2020, 0, 1))
     const dateEnd = Moment().startOf("month")
@@ -102,9 +103,18 @@ export class Feedback extends Component {
           })}
 
 
-          {data.length === 0 &&
+          {apiRequestProcessed && data.length === 0 &&
           <Table.Row>
-            <Table.Cell colSpan={3} textAlign={"center"}>
+            <Table.Cell colSpan={4} textAlign={"center"}>
+              No feedback available
+            </Table.Cell>
+          </Table.Row>
+          }
+
+
+          {!apiRequestProcessed &&
+          <Table.Row>
+            <Table.Cell colSpan={4} textAlign={"center"}>
               <Loader active inline centered>
                 Loading Feedback
               </Loader>

@@ -6,7 +6,8 @@ export class Fire extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      apiRequestProcessed: false
     }
   }
 
@@ -15,11 +16,11 @@ export class Fire extends Component {
   }
 
   getActivities(page) {
-    this.setState({data: [] })
-    fetch('https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Fire')
+    this.setState({data: [], apiRequestProcessed: false })
+    fetch(`https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Fire/${this.props.project}`)
       .then(res => res.json())
       .then((data) => {
-        this.setState({data: data})
+        this.setState({data: data, apiRequestProcessed: true})
       })
       .catch(console.log)
   }
@@ -29,13 +30,10 @@ export class Fire extends Component {
       this.getActivities(this.props.page);
     }
 
-    if (prevProps.project !== this.props.project) {
-      this.props.updateProject(this.props.project)
-    }
   }
 
   render() {
-    const {data} = this.state
+    const {data, apiRequestProcessed} = this.state
 
     return <div>
       {<Table basic='very' fixed celled collapsing style={{width: "100%"}}>
@@ -70,8 +68,16 @@ export class Fire extends Component {
             </Table.Row>
           })}
 
+          {apiRequestProcessed && data.length === 0 &&
+          <Table.Row>
+            <Table.Cell colSpan={4} textAlign={"center"}>
+              No feedback available
+            </Table.Cell>
+          </Table.Row>
+          }
 
-          {data.length === 0 &&
+
+          {!apiRequestProcessed &&
           <Table.Row>
             <Table.Cell colSpan={4} textAlign={"center"}>
               <Loader active inline centered>

@@ -17,7 +17,7 @@ const menuItemStyle = {
 }
 
 const defaultIconStyle = {
-  padding: '2em 2em 3em 2em'
+  padding: '1em 1em 1.5em 1em'
 }
 
 const menuStyle = {
@@ -25,7 +25,7 @@ const menuStyle = {
   height: '100vh',
   display: 'flex',
   justifyContent: 'space-between',
-  width: '6em'
+  width: '12em'
 }
 
 const topBarStyle = {
@@ -52,11 +52,11 @@ function SideMenu() {
 
           <Menu.Item as='a' onClick={() => navigate(`/${context.project}`)}
                      style={defaultIconStyle}>
-            <Icon size='big' name='home' color='grey'/>
+            All Feedback
           </Menu.Item>
           <Menu.Item as='a' onClick={() => navigate(`/${context.project}/fire`)}
                      style={defaultIconStyle}>
-            <Icon size='big' className='on-fire' color='grey'/>
+            Negative Feedback
           </Menu.Item>
 
         </div>
@@ -72,6 +72,7 @@ class App extends Component {
   render() {
     const currentMonth = moment().startOf("month")
 
+    const HomeRoute = props => <Feedback month={currentMonth.format('YYYY-MM-DD')} project="apoc"  />;
     const FeedbackRoute = props => <Feedback month={props.month} project={props.project}  />;
 
 
@@ -95,7 +96,7 @@ class App extends Component {
           </Segment>
           <div style={{display: "flex", padding: "1em 1em"}}>
             <Router>
-              <Redirect from="/" to="/apoc" noThrow />
+              <HomeRoute path="/" />
               <Feedback path="/:project" month={currentMonth.format('YYYY-MM-DD')} />
               <FeedbackRoute path="/:project/feedback/:month" />
               <Page path="/:project/page/:page" />
