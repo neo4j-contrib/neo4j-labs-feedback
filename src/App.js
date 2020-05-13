@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import {Container, Header, Icon, Image, Menu, Segment} from "semantic-ui-react";
 import labsImage from './labs.png';
-import {navigate, Router} from "@reach/router";
+import {navigate, Redirect, Router} from "@reach/router";
 import {Feedback} from "./Feedback";
 import {Page} from "./Page";
 import {Fire} from "./Fire";
@@ -36,7 +36,7 @@ function SideMenu() {
                  style={defaultIconStyle}>
         <Icon size='big' name='home' color='grey'/>
       </Menu.Item>
-      <Menu.Item  as='a' onClick={() => navigate("/fire")}
+      <Menu.Item  as='a' onClick={() => navigate("/apoc/fire")}
                  style={defaultIconStyle}>
         <Icon size='big' className='on-fire' color='grey'/>
       </Menu.Item>
@@ -74,10 +74,11 @@ class App extends Component {
           </Segment>
           <div style={{display: "flex", padding: "1em 1em"}}>
             <Router>
-              <HomeRoute path="/" />
-              <FeedbackRoute path="/feedback/:month" />
-              <PageRoute path="/page/:page" />
-              <FireRoute path="/fire" />
+              <Redirect from="/" to="/apoc" />
+              <HomeRoute path="/apoc" />
+              <FeedbackRoute path="/apoc/feedback/:month" />
+              <PageRoute path="/apoc/page/:page" />
+              <FireRoute path="/apoc/fire" />
             </Router>
           </div>
         </div>

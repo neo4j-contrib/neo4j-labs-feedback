@@ -39,7 +39,7 @@ export class Fire extends Component {
           <Table.Row>
             <Table.HeaderCell width={7}>Page</Table.HeaderCell>
             <Table.HeaderCell width={6} colSpan={2}>Feedback</Table.HeaderCell>
-            <Table.HeaderCell width={3}>% Negative</Table.HeaderCell>
+            <Table.HeaderCell width={3}>Negative Ranking</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -61,7 +61,7 @@ export class Fire extends Component {
                 <Icon name="thumbs up outline icon green large" style={{margin: 0}}/><sup>{row.helpful}</sup>
               </Table.Cell>
               <Table.Cell>
-                {row.unhelpfulness * 100}
+                {row.unhelpfulness}
               </Table.Cell>
             </Table.Row>
           })}

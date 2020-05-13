@@ -60,7 +60,7 @@ export class Feedback extends Component {
           inline
           defaultValue={this.props.month}
           options={monthOptions}
-          onChange={(event, data) => navigate("/feedback/" + data.value)}
+          onChange={(event, data) => navigate("/apoc/feedback/" + data.value)}
         /> <Icon name="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
         name="thumbs down outline icon red" style={{margin: 0}}/><sup>{totalNegative}</sup>
       </span>
