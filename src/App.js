@@ -5,19 +5,14 @@ import labsImage from './labs.png';
 
 import {Feedback} from "./Feedback";
 import {AppContext, AppContextConsumer} from "./appContext";
-import {BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, useHistory, useLocation, useRouteMatch} from "react-router-dom";
 import {Fire} from "./Fire";
 import {Page} from "./Page";
 
 const moment = require("moment")
 
-
-const menuItemStyle = {
-  padding: '2em'
-}
-
 const defaultIconStyle = {
-  padding: '1em 1em 1.5em 1em'
+  padding: '1em 1em 1em 1em'
 }
 
 const menuStyle = {
@@ -32,22 +27,24 @@ const topBarStyle = {
   height: '100%'
 }
 
-function SideMenu() {
+function SideMenu(props) {
   let history = useHistory();
 
+  const {context} = props
+
   const options = [
-    { key: "apoc", text: 'APOC', value: "apoc" },
-    { key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams" },
+    {key: "apoc", text: 'APOC', value: "apoc"},
+    {key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams"},
   ]
 
-  return <AppContextConsumer>
-    {context => (<Menu vertical={true} inverted style={menuStyle}>
+  return <Menu vertical={true} inverted style={menuStyle}>
         <div style={topBarStyle}>
           <Menu.Item>
-            <Dropdown options={options} fluid defaultValue={context.project}
+            <Dropdown options={options} fluid value={context.project}
                       onChange={(event, data) => {
                         context.updateProject(data.value)
-                        history.push(`/${data.value}`)}
+                        history.push(`/${data.value}`)
+                      }
                       }/>
           </Menu.Item>
 
@@ -62,70 +59,83 @@ function SideMenu() {
 
         </div>
       </Menu>
-    )}
-  </AppContextConsumer>
 }
 
-class App extends Component {
-  render() {
-    const currentMonth = moment().startOf("month")
-
-    const page = {
-      header: "Neo4j Labs Feedback",
-      view: <Feedback/>
+function Routes(props) {
+  let l = useLocation();
+  let match = useRouteMatch("/:project");
+  React.useEffect(() => {
+    if (match && match.params.project) {
+      props.context.updateProject(match.params.project)
     }
+  }, [l]);
 
-    return (
-      <Router>
-      <Container fluid style={{ display: 'flex' }}>
-        <SideMenu />
+  const currentMonth = moment().startOf("month")
 
-        <div style={{width: '100%'}}>
-          <Segment basic  vertical={false}
-                   style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0' }}>
-            {page.header ? <Header as='h1' inverted color='grey' style={{marginTop: '0'}}>
-              {page.header}
-            </Header> : null}
-          <Image src={labsImage} width="38px" height="38px" />
+  return <Switch>
+    <Route path="/" exact
+           render={() =>
+             <Feedback month={currentMonth.format('YYYY-MM-DD')} project="apoc"/>}
+    />
 
-          </Segment>
-          <div style={{display: "flex", padding: "1em 1em"}}>
-            <Switch>
-              <Route path="/" exact
-                     render={() =>
-                       <Feedback month={currentMonth.format('YYYY-MM-DD')} project="apoc"/>}
-              />
+    <Route path="/:project" exact
+           render={(props) =>
+             <Feedback month={currentMonth.format('YYYY-MM-DD')} project={props.match.params.project}/>}
+    />
 
-              <Route path="/:project" exact
-                     render={(props) =>
-                       <Feedback month={currentMonth.format('YYYY-MM-DD')} project={props.match.params.project}/>}
-              />
+    <Route path="/:project/feedback/:month" exact
+           render={(props) =>
+             <Feedback month={props.match.params.month} project={props.match.params.project}/>}
+    />
 
-              <Route path="/:project/feedback/:month" exact
-                     render={(props) =>
-                       <Feedback month={props.match.params.month} project={props.match.params.project}  />}
-              />
+    <Route path="/:project/fire" exact
+           render={(props) =>
+             <Fire project={props.match.params.project}/>}
+    />
 
-              <Route path="/:project/fire" exact
-                     render={(props) =>
-                       <Fire project={props.match.params.project}/>}
-              />
+    <Route path="/:project/page/:page" exact
+           render={(props) =>
+             <Page page={props.match.params.page}/>}
+    />
 
-              <Route path="/:project/page/:page" exact
-                     render={(props) =>
-                       <Page page={props.match.params.page}  />}
-              />
-
-            </Switch>
-          </div>
-        </div>
-      </Container>
-      </Router>
-    );
-  }
+  </Switch>
 }
 
 
-App.contextType = AppContext;
+export default function App() {
+  const page = {
+    header: "Neo4j Labs Feedback",
+    view: <Feedback/>
+  }
 
-export default App;
+  return (
+    <Router>
+      <Container fluid style={{display: 'flex'}}>
+        <AppContextConsumer>
+          {context =>
+            <React.Fragment>
+              <SideMenu context={context}/>
+
+              <div style={{width: '100%'}}>
+                <Segment basic vertical={false}
+                         style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0'}}>
+                  {page.header ? <Header as='h1' inverted color='grey' style={{marginTop: '0'}}>
+                    {page.header}
+                  </Header> : null}
+                  <Image src={labsImage} width="38px" height="38px"/>
+
+                </Segment>
+                <div style={{display: "flex", padding: "1em 1em"}}>
+
+                  <Routes context={context}/>
+
+                </div>
+              </div>
+            </React.Fragment>
+          }
+        </AppContextConsumer>
+      </Container>
+    </Router>
+  );
+
+}

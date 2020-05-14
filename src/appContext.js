@@ -8,9 +8,8 @@ class AppContextProvider extends Component {
   };
 
   updateProject = (project) => {
-    if(this.state.project !== project) {
+      console.log("update project: " + project)
       this.setState({project: project});
-    }
   };
 
   render() {

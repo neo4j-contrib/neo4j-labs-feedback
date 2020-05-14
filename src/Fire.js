@@ -80,7 +80,7 @@ export class Fire extends Component {
           {!apiRequestProcessed &&
           <Table.Row>
             <Table.Cell colSpan={4} textAlign={"center"}>
-              <Loader active inline centered>
+              <Loader active inline centered="true">
                 Loading Feedback
               </Loader>
             </Table.Cell>

@@ -70,8 +70,8 @@ export class Feedback extends Component {
     return <div>
       <span>
         Feedback in {' '} <MonthSelector project={this.props.project} month={this.props.month}  />
-         <Icon name="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
-        name="thumbs down outline icon red" style={{margin: 0}}/><sup>{totalNegative}</sup>
+         <Icon className="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
+        className="thumbs down outline icon red" style={{margin: 0}}/><sup>{totalNegative}</sup>
       </span>
 
       {<Table basic='very' fixed celled collapsing style={{width: "100%"}}>
@@ -86,7 +86,7 @@ export class Feedback extends Component {
         <Table.Body>
 
           {data.map(row => {
-            return <Table.Row>
+            return <Table.Row key={row.uri}>
               <Table.Cell key={row.uri}>
                 <Link to={`/${this.props.project}/page/` + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
                 <a href={row.uri.toString()} target="_blank">
@@ -95,9 +95,9 @@ export class Feedback extends Component {
               </Table.Cell>
               <Table.Cell>
                 {row.helpful ?
-                  <Icon name="thumbs up outline icon large green"/> :
+                  <Icon className="thumbs up outline icon large green"/> :
                   <div>
-                    <p><Icon name="thumbs down outline icon large red"/>{row.reason}</p>
+                    <p><Icon className="thumbs down outline icon large red"/>{row.reason}</p>
                     {row.information && <p>{row.information}</p>}
                   </div>}
               </Table.Cell>
@@ -120,7 +120,7 @@ export class Feedback extends Component {
           {!apiRequestProcessed &&
           <Table.Row>
             <Table.Cell colSpan={4} textAlign={"center"}>
-              <Loader active inline centered>
+              <Loader active inline centered="true">
                 Loading Feedback
               </Loader>
             </Table.Cell>
