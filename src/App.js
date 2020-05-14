@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Container, Dropdown, Header, Icon, Image, Menu, Segment} from "semantic-ui-react";
+import {Container, Dropdown, Header, Image, Menu, Segment} from "semantic-ui-react";
 import labsImage from './labs.png';
-import {createHistory, Location, navigate, Redirect, Router} from "@reach/router";
+
 import {Feedback} from "./Feedback";
-import {Page} from "./Page";
-import {Fire} from "./Fire";
 import {AppContext, AppContextConsumer} from "./appContext";
+import {BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
+import {Fire} from "./Fire";
 
 const moment = require("moment")
-
 
 
 const menuItemStyle = {
@@ -33,6 +32,7 @@ const topBarStyle = {
 }
 
 function SideMenu() {
+  let history = useHistory();
 
   const options = [
     { key: "apoc", text: 'APOC', value: "apoc" },
@@ -46,15 +46,15 @@ function SideMenu() {
             <Dropdown options={options} fluid defaultValue={context.project}
                       onChange={(event, data) => {
                         context.updateProject(data.value)
-                        navigate(`/${data.value}`)}
+                        history.push(`/${data.value}`)}
                       }/>
           </Menu.Item>
 
-          <Menu.Item as='a' onClick={() => navigate(`/${context.project}`)}
+          <Menu.Item as='a' onClick={() => history.push(`/${context.project}`)}
                      style={defaultIconStyle}>
             All Feedback
           </Menu.Item>
-          <Menu.Item as='a' onClick={() => navigate(`/${context.project}/fire`)}
+          <Menu.Item as='a' onClick={() => history.push(`/${context.project}/fire`)}
                      style={defaultIconStyle}>
             Negative Feedback
           </Menu.Item>
@@ -66,15 +66,8 @@ function SideMenu() {
 }
 
 class App extends Component {
-
-
-
   render() {
     const currentMonth = moment().startOf("month")
-
-    const HomeRoute = props => <Feedback month={currentMonth.format('YYYY-MM-DD')} project="apoc"  />;
-    const FeedbackRoute = props => <Feedback month={props.month} project={props.project}  />;
-
 
     const page = {
       header: "Neo4j Labs Feedback",
@@ -82,6 +75,7 @@ class App extends Component {
     }
 
     return (
+      <Router>
       <Container fluid style={{ display: 'flex' }}>
         <SideMenu />
 
@@ -95,16 +89,31 @@ class App extends Component {
 
           </Segment>
           <div style={{display: "flex", padding: "1em 1em"}}>
-            <Router>
-              <HomeRoute path="/" />
-              <Feedback path="/:project" month={currentMonth.format('YYYY-MM-DD')} />
-              <FeedbackRoute path="/:project/feedback/:month" />
-              <Page path="/:project/page/:page" />
-              <Fire path="/:project/fire" />
-            </Router>
+            <Switch>
+              <Route path="/" exact
+                     render={() =>
+                       <Feedback month={currentMonth.format('YYYY-MM-DD')} project="apoc"/>}
+              />
+
+              <Route path="/:project" exact
+                     render={(props) =>
+                       <Feedback month={currentMonth.format('YYYY-MM-DD')} project={props.match.params.project}/>}
+              />
+
+              <Route path="/:project/feedback/:month" exact
+                     render={(props) =>
+                       <Feedback month={props.match.params.month} project={props.match.params.project}  />}
+              />
+
+              <Route path="/:project/fire" exact
+                     render={(props) =>
+                       <Fire project={props.match.params.project}/>}
+              />
+            </Switch>
           </div>
         </div>
       </Container>
+      </Router>
     );
   }
 }

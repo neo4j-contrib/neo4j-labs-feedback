@@ -5,11 +5,10 @@ import {Link, navigate} from "@reach/router";
 
 import Moment from 'moment'
 
-import { AppContext } from "./appContext";
-
 export class Feedback extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       data: [],
       apiRequestProcessed: false
@@ -31,7 +30,6 @@ export class Feedback extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("componentDidUpdate...")
     if (prevProps.month !== this.props.month || prevProps.project !== this.props.project) {
       this.getActivities(this.props.month);
     }
