@@ -3,7 +3,34 @@ import './App.css';
 import {Dropdown, Icon, Loader, Table} from "semantic-ui-react";
 import {Link, navigate} from "@reach/router";
 
+import {useHistory} from "react-router-dom";
+
 import Moment from 'moment'
+
+function MonthSelector(props) {
+  let history = useHistory();
+
+  const dateStart = Moment(new Date(2020, 0, 1))
+  const dateEnd = Moment().startOf("month")
+  const monthOptions = [];
+
+  while (dateEnd >= dateStart || dateStart.format('M') === dateEnd.format('M')) {
+    monthOptions.push({
+      key: dateStart.format('YYYY-MM-DD'),
+      value: dateStart.format('YYYY-MM-DD'),
+      text: dateStart.format('MMM YYYY')
+    });
+    dateStart.add(1, 'month');
+  }
+
+  return <Dropdown
+    placeholder='Select month'
+    inline
+    defaultValue={props.month}
+    options={monthOptions}
+    onChange={(event, data) => history.push(`/${props.project}/feedback/${data.value}`)}
+  />
+}
 
 export class Feedback extends Component {
   constructor(props) {
@@ -38,32 +65,13 @@ export class Feedback extends Component {
   render() {
     const {data, apiRequestProcessed} = this.state
 
-    const dateStart = Moment(new Date(2020, 0, 1))
-    const dateEnd = Moment().startOf("month")
-    const monthOptions = [];
-
-    while (dateEnd >= dateStart || dateStart.format('M') === dateEnd.format('M')) {
-      monthOptions.push({
-        key: dateStart.format('YYYY-MM-DD'),
-        value: dateStart.format('YYYY-MM-DD'),
-        text: dateStart.format('MMM YYYY')
-      });
-      dateStart.add(1, 'month');
-    }
-
     const totalPositive = data.filter(row => row.helpful).reduce((total, _) => total + 1, 0)
     const totalNegative = data.filter(row => !row.helpful).reduce((total, _) => total + 1, 0)
 
     return <div>
       <span>
-        Feedback in {' '}
-        <Dropdown
-          placeholder='Select month'
-          inline
-          defaultValue={this.props.month}
-          options={monthOptions}
-          onChange={(event, data) => navigate(`/${this.props.project}/feedback/${data.value}`)}
-        /> <Icon name="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
+        Feedback in {' '} <MonthSelector project={this.props.project} month={this.props.month}  />
+         <Icon name="thumbs up outline icon green" style={{margin: 0}}/><sup>{totalPositive}</sup> <Icon
         name="thumbs down outline icon red" style={{margin: 0}}/><sup>{totalNegative}</sup>
       </span>
 
