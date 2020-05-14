@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Dropdown, Icon, Loader, Table} from "semantic-ui-react";
-import {Link, navigate} from "@reach/router";
 
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 
 import Moment from 'moment'
 

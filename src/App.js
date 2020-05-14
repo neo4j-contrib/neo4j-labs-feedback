@@ -7,6 +7,7 @@ import {Feedback} from "./Feedback";
 import {AppContext, AppContextConsumer} from "./appContext";
 import {BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
 import {Fire} from "./Fire";
+import {Page} from "./Page";
 
 const moment = require("moment")
 
@@ -109,6 +110,12 @@ class App extends Component {
                      render={(props) =>
                        <Fire project={props.match.params.project}/>}
               />
+
+              <Route path="/:project/page/:page" exact
+                     render={(props) =>
+                       <Page page={props.match.params.page}  />}
+              />
+
             </Switch>
           </div>
         </div>
