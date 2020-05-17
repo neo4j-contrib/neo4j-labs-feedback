@@ -5,10 +5,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {AppContextProvider} from "./appContext";
 
+console.log(process.env)
+
 ReactDOM.render(
   <React.StrictMode>
     <AppContextProvider>
-      <App/>
+      <App apiServer={process.env.REACT_APP_API_SERVER}/>
     </AppContextProvider>
   </React.StrictMode>,
   document.getElementById('root')

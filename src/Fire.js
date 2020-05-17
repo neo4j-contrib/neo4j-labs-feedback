@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {Icon, Loader, Table} from "semantic-ui-react";
-import {Link} from "@reach/router";
+import {Link} from "react-router-dom";
 
 export class Fire extends Component {
   constructor(props) {
     super(props)
     this.state = {
       data: [],
-      apiRequestProcessed: false
+      apiRequestProcessed: false,
+      error: null
     }
   }
 
@@ -16,13 +17,16 @@ export class Fire extends Component {
   }
 
   getActivities(page) {
-    this.setState({data: [], apiRequestProcessed: false })
-    fetch(`https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Fire/${this.props.project}`)
+    this.setState({data: [], apiRequestProcessed: false, error: null })
+    let httpEndPoint = `${this.props.apiServer}/Fire/${this.props.project}`;
+    fetch(httpEndPoint)
       .then(res => res.json())
       .then((data) => {
         this.setState({data: data, apiRequestProcessed: true})
       })
-      .catch(console.log)
+      .catch(error => {
+        this.setState({apiRequestProcessed: true, error: `Request to ${httpEndPoint} failed: ${error.toString()}`})
+      })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -33,7 +37,7 @@ export class Fire extends Component {
   }
 
   render() {
-    const {data, apiRequestProcessed} = this.state
+    const {data, apiRequestProcessed, error} = this.state
 
     return <div>
       {<Table basic='very' fixed celled collapsing style={{width: "100%"}}>
@@ -71,7 +75,7 @@ export class Fire extends Component {
           {apiRequestProcessed && data.length === 0 &&
           <Table.Row>
             <Table.Cell colSpan={4} textAlign={"center"}>
-              No feedback available
+              {error || 'No feedback available'}
             </Table.Cell>
           </Table.Row>
           }

@@ -6,6 +6,10 @@ import {useHistory, Link} from "react-router-dom";
 
 import Moment from 'moment'
 
+const process = require('process');
+
+
+
 function MonthSelector(props) {
   let history = useHistory();
 
@@ -37,7 +41,8 @@ export class Feedback extends Component {
 
     this.state = {
       data: [],
-      apiRequestProcessed: false
+      apiRequestProcessed: false,
+      error: null
     }
   }
 
@@ -46,13 +51,16 @@ export class Feedback extends Component {
   }
 
   getActivities(month) {
-    this.setState({data: [], apiRequestProcessed: false})
-    fetch(`https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Feedback/${this.props.project}?date=${month}`)
+    this.setState({data: [], apiRequestProcessed: false, error: null})
+    let httpEndPoint = `${this.props.apiServer}/Feedback/${this.props.project}?date=${month}`;
+    fetch(httpEndPoint)
       .then(res => res.json())
       .then((data) => {
         this.setState({data: data, apiRequestProcessed: true})
       })
-      .catch(console.log)
+      .catch(error => {
+        this.setState({apiRequestProcessed: true, error: `Request to ${httpEndPoint} failed: ${error.toString()}`})
+      })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -62,7 +70,7 @@ export class Feedback extends Component {
   }
 
   render() {
-    const {data, apiRequestProcessed} = this.state
+    const {data, apiRequestProcessed, error} = this.state
 
     const totalPositive = data.filter(row => row.helpful).reduce((total, _) => total + 1, 0)
     const totalNegative = data.filter(row => !row.helpful).reduce((total, _) => total + 1, 0)
@@ -111,7 +119,7 @@ export class Feedback extends Component {
           {apiRequestProcessed && data.length === 0 &&
           <Table.Row>
             <Table.Cell colSpan={4} textAlign={"center"}>
-              No feedback available
+              {error || 'No feedback available'}
             </Table.Cell>
           </Table.Row>
           }

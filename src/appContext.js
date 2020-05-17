@@ -8,7 +8,6 @@ class AppContextProvider extends Component {
   };
 
   updateProject = (project) => {
-      console.log("update project: " + project)
       this.setState({project: project});
   };
 

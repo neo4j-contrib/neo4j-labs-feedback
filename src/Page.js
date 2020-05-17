@@ -17,7 +17,7 @@ export class Page extends Component {
 
   getActivities(page) {
     this.setState({data: {feedback: []}})
-    fetch('https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev/Page/' + page)
+    fetch('${this.props.apiServer}/Page/' + page)
       .then(res => res.json())
       .then((data) => {
         this.setState({data: data[0]})

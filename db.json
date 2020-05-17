@@ -1,0 +1,148 @@
+{
+  "Feedback": [
+    {
+      "helpful": true,
+      "information": null,
+      "reason": null,
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/import-csv/",
+      "date": "16 May 2020"
+    },
+    {
+      "helpful": true,
+      "information": null,
+      "reason": null,
+      "uri": "https://neo4j.com/docs/labs/apoc/current/",
+      "date": "16 May 2020"
+    },
+    {
+      "helpful": true,
+      "information": null,
+      "reason": null,
+      "uri": "https://neo4j.com/docs/labs/apoc/current/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    },
+    {
+      "helpful": false,
+      "information": "unhelpful",
+      "reason": "missing",
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/load-json/",
+      "date": "15 May 2020"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "Fire": [
+    {
+      "uri": "https://neo4j.com/docs/labs/apoc/current/import/graphml/",
+      "helpful": 2,
+      "notHelpful": 13,
+      "unhelpfulness": 0.7177292905524157
+    },
+    {
+      "uri": "https://neo4j.com/docs/labs/apoc/current/graph-querying/path-querying/",
+      "helpful": 0,
+      "notHelpful": 4,
+      "unhelpfulness": 0.7089214053677908
+    },
+    {
+      "uri": "https://neo4j.com/docs/labs/apoc/current/graph-querying/",
+      "helpful": 0,
+      "notHelpful": 2,
+      "unhelpfulness": 0.549092369988321
+    },
+    {
+      "uri": "https://neo4j.com/docs/labs/apoc/current/cypher-execution/",
+      "helpful": 1,
+      "notHelpful": 3,
+      "unhelpfulness": 0.4325414503689865
+    },
+    {
+      "uri": "https://neo4j.com/docs/labs/apoc/3.5/data-structures/conversion-functions/",
+      "helpful": 0,
+      "notHelpful": 1,
+      "unhelpfulness": 0.37844750322520615
+    }
+  ]
+}

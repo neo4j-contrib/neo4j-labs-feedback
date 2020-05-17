@@ -1,0 +1,4 @@
+{
+    "/Feedback/:project": "/Feedback?project=:project",
+    "/Fire/:project": "/Fire?project=:project"
+}
