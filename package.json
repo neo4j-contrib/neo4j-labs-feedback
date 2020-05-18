@@ -18,6 +18,7 @@
   "homepage": "https://neo4j-labs.github.io/",
   "scripts": {
     "start": "react-scripts start",
+    "startLocal": "REACT_APP_API_SERVER=http://localhost:8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

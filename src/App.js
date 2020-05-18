@@ -34,6 +34,8 @@ function SideMenu(props) {
 
     const options = [
         {key: "apoc", text: 'APOC', value: "apoc"},
+        {key: "@graphapps-neosemantics", text: 'n10s Graph App', value: "@graphapps-neosemantics"},
+        {key: "@graphapps-apoc", text: 'APOC Graph App', value: "@graphapps-apoc"},
         {key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams"},
     ]
 
