@@ -51,8 +51,8 @@ export class Fire extends Component {
 
         <Table.Body>
 
-          {data.map(row => {
-            return <Table.Row>
+          {data.map((row, index) => {
+            return <Table.Row key={index}>
               <Table.Cell>
                 <Link to={`/${this.props.project}/page/` + btoa(row.uri.toString())}>{row.uri.toString()}</Link>
                 <a href={row.uri.toString()} target="_blank">
@@ -61,10 +61,10 @@ export class Fire extends Component {
 
               </Table.Cell>
               <Table.Cell>
-                <Icon name="thumbs down outline icon red large" style={{margin: 0}}/><sup>{row.notHelpful}</sup>
+                <Icon className="thumbs down outline icon red large" style={{margin: 0}}/><sup>{row.notHelpful}</sup>
               </Table.Cell>
               <Table.Cell>
-                <Icon name="thumbs up outline icon green large" style={{margin: 0}}/><sup>{row.helpful}</sup>
+                <Icon className="thumbs up outline icon green large" style={{margin: 0}}/><sup>{row.helpful}</sup>
               </Table.Cell>
               <Table.Cell>
                 {row.unhelpfulness}

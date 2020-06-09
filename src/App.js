@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
+import React, {useState} from 'react';
 import {Container, Dropdown, Header, Image, Menu, Segment} from "semantic-ui-react";
+import './App.css';
 import labsImage from './labs.png';
 
 import {Feedback} from "./Feedback";
@@ -8,6 +8,7 @@ import {AppContextConsumer} from "./appContext";
 import {BrowserRouter as Router, Route, Switch, useHistory, useLocation, useRouteMatch} from "react-router-dom";
 import {Fire} from "./Fire";
 import {Page} from "./Page";
+import {slide as HamburgerMenu} from 'react-burger-menu'
 
 const moment = require("moment")
 
@@ -22,45 +23,70 @@ const menuStyle = {
     width: '12em'
 }
 
+const rightMenuStyle = {
+    borderRadius: '0',
+    display: 'flex',
+    width: '100%',
+}
+
 const navStyle = {
     backgroundColor: "#1b1c1d"
 }
 
+const projects = {
+    "apoc": "APOC",
+    "GRANDstack": "GRANDstack",
+    "neo4j-streams": "Neo4j Streams",
+    "developer": "Developer Guides",
+    "@graphapps-apoc": "APOC Graph App",
+    "@graphapps-neosemantics": "n10s Graph App"
+}
 
-function SideMenu(props) {
+function TopMenu(props) {
+    const [menuOpen, setMenuOpen] = useState(false);
+
     let history = useHistory();
 
     const {context} = props
 
-    const options = [
-        {key: "apoc", text: 'APOC', value: "apoc"},
-        {key: "@graphapps-neosemantics", text: 'n10s Graph App', value: "@graphapps-neosemantics"},
-        {key: "@graphapps-apoc", text: 'APOC Graph App', value: "@graphapps-apoc"},
-        {key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams"},
-        {key: "GRANDstack", text: 'GRANDstack', value: "GRANDstack"},
-    ]
+    const options = Object.keys(projects).map(key => {
+        return {key: key, text: projects[key], value: key}
+    })
 
-    return <nav style={navStyle}>
-        <Menu vertical={true} inverted style={menuStyle}>
-            <Menu.Item>
-                <Dropdown options={options} fluid value={context.project}
-                          onChange={(event, data) => {
-                              context.updateProject(data.value)
-                              history.push(`/${data.value}`)
-                          }
-                          }/>
-            </Menu.Item>
+    return <nav className="top-nav">
+        <HamburgerMenu right
+                       isOpen={menuOpen}
+                       onStateChange={(state) => setMenuOpen(state.isOpen)}
+        >
+            <Menu vertical={true} inverted style={rightMenuStyle}
+                  >
+                <Menu.Item>
+                    <Dropdown options={options} fluid value={context.project}
+                              onChange={(event, data) => {
+                                  context.updateProject(data.value)
+                                  setMenuOpen(false)
+                                  history.push(`/${data.value}`)
+                              }
+                              }/>
+                </Menu.Item>
 
-            <Menu.Item as='a' onClick={() => history.push(`/${context.project}`)}
-                       style={defaultIconStyle}>
-                All Feedback
-            </Menu.Item>
-            <Menu.Item as='a' onClick={() => history.push(`/${context.project}/fire`)}
-                       style={defaultIconStyle}>
-                Negative Feedback
-            </Menu.Item>
 
-    </Menu>
+                <Menu.Item as='a' onClick={() => {
+                    setMenuOpen(false)
+                    history.push(`/${context.project}`)
+                }}
+                           style={defaultIconStyle}>
+                    All Feedback
+                </Menu.Item>
+                <Menu.Item as='a' onClick={() => {
+                    setMenuOpen(false)
+                    history.push(`/${context.project}/fire`)
+                }}
+                           style={defaultIconStyle}>
+                    Negative Feedback
+                </Menu.Item>
+            </Menu>
+        </HamburgerMenu>
     </nav>
 }
 
@@ -116,19 +142,19 @@ export default function App(props) {
 
     return (
         <Router>
-            <Container fluid style={{display: 'flex'}}>
+            <Container fluid style={{display: 'flex'}} className="main">
                 <AppContextConsumer>
                     {context =>
                         <React.Fragment>
-                            <SideMenu context={context}/>
+                            <TopMenu context={context}/>
 
                             <main style={{width: '100%'}}>
                                 <Segment basic vertical={false}
                                          style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0'}}>
-                                    {page.header ? <Header as='h1' inverted color='grey' style={{marginTop: '0'}}>
-                                        {page.header}
+                                    {context.project ? <Header as='h1' inverted color='grey' style={{marginTop: '0'}}>
+                                        {projects[context.project] + " Feedback"}
                                     </Header> : null}
-                                    <Image src={labsImage} width="38px" height="38px"/>
+                                    {/*<Image src={labsImage} width="38px" height="38px"/>*/}
 
                                 </Segment>
                                 <div style={{display: "flex", padding: "1em 1em"}}>
