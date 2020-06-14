@@ -38,6 +38,7 @@ function SideMenu(props) {
         {key: "@graphapps-apoc", text: 'APOC Graph App', value: "@graphapps-apoc"},
         {key: "neo4j-streams", text: 'Neo4j Streams', value: "neo4j-streams"},
         {key: "GRANDstack", text: 'GRANDstack', value: "GRANDstack"},
+        {key: "@grandstack-graphql-architect", text: 'GraphQL Architect', value: "@grandstack-graphql-architect"}
     ]
 
     return <nav style={navStyle}>
