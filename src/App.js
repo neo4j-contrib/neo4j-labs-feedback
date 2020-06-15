@@ -33,21 +33,13 @@ const navStyle = {
     backgroundColor: "#1b1c1d"
 }
 
-const projects = {
-    "apoc": "APOC",
-    "GRANDstack": "GRANDstack",
-    "neo4j-streams": "Neo4j Streams",
-    "developer": "Developer Guides",
-    "@graphapps-apoc": "APOC Graph App",
-    "@graphapps-neosemantics": "n10s Graph App"
-}
-
 function TopMenu(props) {
+
     const [menuOpen, setMenuOpen] = useState(false);
 
     let history = useHistory();
 
-    const {context} = props
+    const {context, projects} = props
 
     const options = Object.keys(projects).map(key => {
         return {key: key, text: projects[key], value: key}
@@ -59,7 +51,7 @@ function TopMenu(props) {
                        onStateChange={(state) => setMenuOpen(state.isOpen)}
         >
             <Menu vertical={true} inverted style={rightMenuStyle}
-                  >
+            >
                 <Menu.Item>
                     <Dropdown options={options} fluid value={context.project}
                               onChange={(event, data) => {
@@ -135,9 +127,17 @@ function Routes(parentProps) {
 
 
 export default function App(props) {
-    const page = {
-        header: "Neo4j Labs Feedback",
-        view: <Feedback/>
+    const [projects, setProjects] = useState([]);
+
+    if (projects.length === 0) {
+        const httpEndPoint = `${props.apiServer}/Projects`;
+        fetch(httpEndPoint)
+            .then(res => res.json())
+            .then((data) => {
+                setProjects(Object.assign({}, ...data.map((x) => ({[x.slug]: x.displayName}))))
+            })
+            .catch(error => {
+            })
     }
 
     return (
@@ -146,7 +146,7 @@ export default function App(props) {
                 <AppContextConsumer>
                     {context =>
                         <React.Fragment>
-                            <TopMenu context={context}/>
+                            <TopMenu context={context} projects={projects}/>
 
                             <main style={{width: '100%'}}>
                                 <Segment basic vertical={false}
@@ -158,7 +158,6 @@ export default function App(props) {
 
                                 </Segment>
                                 <div style={{display: "flex", padding: "1em 1em"}}>
-
                                     <Routes context={context} apiServer={props.apiServer}/>
 
                                 </div>

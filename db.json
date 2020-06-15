@@ -144,5 +144,39 @@
       "notHelpful": 1,
       "unhelpfulness": 0.37844750322520615
     }
+  ],
+  "Projects": [
+    {
+      "slug": "apoc",
+      "displayName": "APOC"
+    },
+    {
+      "slug": "@graphapps-apoc",
+      "displayName": "APOC Graph App"
+    },
+    {
+      "slug": "developer",
+      "displayName": "Developer Guides"
+    },
+    {
+      "slug": "docs",
+      "displayName": "Documentation"
+    },
+    {
+      "slug": "GRANDstack",
+      "displayName": "GRANDstack"
+    },
+    {
+      "slug": "@grandstack-graphql-architect",
+      "displayName": "GraphQL Architect"
+    },
+    {
+      "slug": "neo4j-streams",
+      "displayName": "Neo4j Streams"
+    },
+    {
+      "slug": "@graphapps-neosemantics",
+      "displayName": "n10s Graph App"
+    }
   ]
 }
