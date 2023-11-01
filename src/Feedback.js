@@ -87,7 +87,8 @@ export class Feedback extends Component {
           <Table.Row>
             <Table.HeaderCell width={7}>Page</Table.HeaderCell>
             <Table.HeaderCell width={5}>Feedback</Table.HeaderCell>
-            <Table.HeaderCell width={5}>Date</Table.HeaderCell>
+            <Table.HeaderCell width={7}>User Journey</Table.HeaderCell>
+            <Table.HeaderCell width={2}>Date</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -102,12 +103,18 @@ export class Feedback extends Component {
                 </a>
               </Table.Cell>
               <Table.Cell>
-                {row.helpful ?
-                  <Icon className="thumbs up outline icon large green"/> :
-                  <div>
-                    <p><Icon className="thumbs down outline icon large red"/>{row.reason}</p>
-                    {row.information && <p>{row.information}</p>}
-                  </div>}
+                <div>
+                  <p>
+                    {row.helpful ?
+                    <Icon className="thumbs up outline icon large green"/> :
+                    <Icon className="thumbs down outline icon large red"/>}
+                    {row.reason}
+                  </p>
+                  {row.information && <p>{row.information}</p>}
+                </div>
+              </Table.Cell>
+              <Table.Cell>
+                {row.userJourney}
               </Table.Cell>
               <Table.Cell>
                 {row.date}
