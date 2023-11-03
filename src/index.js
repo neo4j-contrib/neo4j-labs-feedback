@@ -10,7 +10,7 @@ console.log(process.env)
 ReactDOM.render(
   <React.StrictMode>
     <AppContextProvider>
-      <App apiServer={process.env.REACT_APP_API_SERVER}/>
+      <App apiServer='https://uglfznxroe.execute-api.us-east-1.amazonaws.com/dev'/>
     </AppContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
