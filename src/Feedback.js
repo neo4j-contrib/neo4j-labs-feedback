@@ -113,7 +113,7 @@ export class Feedback extends Component {
                   {row.information && <p>{row.information}</p>}
                 </div>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
                 {row.userJourney}
               </Table.Cell>
               <Table.Cell>
