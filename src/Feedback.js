@@ -116,7 +116,7 @@ export class Feedback extends Component {
               <Table.Cell style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
               {typeof row.userJourney == 'string' ?
                 <details>
-                  <summary>{row.userJourney.split('\n')[0]}</summary>
+                  <summary>{'(' + row.sessionDuration + 's) ' + row.userJourney.split('\n')[0].split(' ')[1]}</summary>
                   {row.userJourney}
                 </details> : ''
               }
