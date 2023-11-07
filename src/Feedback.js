@@ -114,7 +114,12 @@ export class Feedback extends Component {
                 </div>
               </Table.Cell>
               <Table.Cell style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
-                {row.userJourney}
+              {typeof row.userJourney == 'string' ?
+                <details>
+                  <summary>{row.userJourney.split('\n')[0]}</summary>
+                  {row.userJourney}
+                </details> : ''
+              }
               </Table.Cell>
               <Table.Cell>
                 {row.date}
